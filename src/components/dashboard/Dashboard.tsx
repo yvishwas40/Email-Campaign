@@ -4,6 +4,8 @@ import { CampaignStats } from './CampaignStats';
 import { ContactsList } from './ContactsList';
 import { EmailComposer } from './EmailComposer';
 import { CampaignScheduler } from './CampaignScheduler';
+import { EmailTracking } from './EmailTracking'; // New import
+import { Progress } from './Progress'; // Progress bar import
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState('stats');
@@ -73,7 +75,13 @@ export function Dashboard() {
           </div>
 
           <div className="bg-white rounded-lg shadow">
-            {activeTab === 'stats' && <CampaignStats />}
+            {activeTab === 'stats' && (
+              <>
+                <CampaignStats />
+                <EmailTracking />
+                <Progress current={45} total={100} /> {/* Added progress bar */}
+              </>
+            )}
             {activeTab === 'contacts' && <ContactsList />}
             {activeTab === 'compose' && <EmailComposer />}
             {activeTab === 'schedule' && <CampaignScheduler />}
