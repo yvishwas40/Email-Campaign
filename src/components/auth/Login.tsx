@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../../lib/firebase';
+import { auth } from '../../lib/firebase'; // Ensure this is the correct path
 import { Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -16,13 +16,17 @@ export function Login() {
     try {
       // Sign in with Google account
       const result = await signInWithPopup(auth, provider);
+
       // Get user info from the result
       const user = result.user;
       console.log('User Info:', user);
 
+      // Optionally, save user info in your app's state/context
+
       // Navigate to the home page after successful login
       navigate('/');
     } catch (error: any) {
+      console.error('Google login error:', error); // Log error to console for debugging
       toast.error('Failed to log in with Google');
     } finally {
       setLoading(false);

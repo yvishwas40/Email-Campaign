@@ -1,7 +1,9 @@
+// lib/firebase.js
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
+// Firebase configuration from environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY!,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN!,
@@ -13,7 +15,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Initialize Authentication and Database services
 const auth = getAuth(app);
 const database = getDatabase(app);
 
-export { auth };
+export { auth, database }; // Export both auth and database
