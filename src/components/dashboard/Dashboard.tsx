@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { BarChart, Users, Mail, Clock } from 'lucide-react';
+import { BarChart, Users, Mail, Clock, Edit } from 'lucide-react'; // Import Edit icon for email generator
 import { CampaignStats } from './CampaignStats';
 import { ContactsList } from './ContactsList';
 import { EmailComposer } from './EmailComposer';
 import { CampaignScheduler } from './CampaignScheduler';
-import { EmailTracking } from './EmailTracking'; // New import
-import { Progress } from './Progress'; // Progress bar import
+import { EmailTracking } from './EmailTracking';
+import { Progress } from './Progress';
+import { EmailGeneratorForm } from './EmailGeneratorForm';  // Import Email Generator Form
 
 export function Dashboard() {
   const [activeTab, setActiveTab] = useState('stats');
@@ -72,6 +73,18 @@ export function Dashboard() {
               <Clock className="h-5 w-5 mr-2" />
               Schedule
             </button>
+            {/* Add new button for Email Generator */}
+            <button
+              onClick={() => setActiveTab('email-generator')}
+              className={`flex items-center px-4 py-2 rounded-lg ${
+                activeTab === 'email-generator'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              <Edit className="h-5 w-5 mr-2" />
+              Email Generator
+            </button>
           </div>
 
           <div className="bg-white rounded-lg shadow">
@@ -85,6 +98,8 @@ export function Dashboard() {
             {activeTab === 'contacts' && <ContactsList />}
             {activeTab === 'compose' && <EmailComposer />}
             {activeTab === 'schedule' && <CampaignScheduler />}
+            {/* Add condition for Email Generator Form */}
+            {activeTab === 'email-generator' && <EmailGeneratorForm />}
           </div>
         </div>
       </div>

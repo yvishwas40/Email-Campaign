@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../../lib/firebase'; // Ensure this is the correct path
@@ -10,6 +10,28 @@ const provider = new GoogleAuthProvider();
 export function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [columns, setColumns] = useState<string[]>([]); // State to hold columns for dynamic use
+
+  // Example dataset (this should come from the actual data you're working with)
+  const dataset = [
+    { companyName: 'Company A', location: 'New York', email: 'contact@companya.com' },
+    { companyName: 'Company B', location: 'San Francisco', email: 'contact@companyb.com' },
+  ];
+
+  // Detect and store column names from the dataset
+  const detectColumns = () => {
+    const columnNames = Object.keys(dataset[0] || {});
+    setColumns(columnNames);
+  };
+
+  // Function to replace placeholders in the email template (if needed in future components)
+  const replacePlaceholders = (text: string, data: any) => {
+    let updatedText = text;
+    columns.forEach((column) => {
+      updatedText = updatedText.replace(new RegExp(`{${column}}`, 'g'), data[column] || '');
+    });
+    return updatedText;
+  };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -32,7 +54,10 @@ export function Login() {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    detectColumns();  // This is where the columns get detected
+  }, []);
+  
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -43,9 +68,22 @@ export function Login() {
           Sign in to your account
         </h2>
       </div>
-
+  
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {/* Display Detected Columns */}
+          <div className="columns-section">
+            <h3>Detected Columns</h3>
+            <ul>
+              {columns.length > 0 ? (
+                columns.map((column, index) => <li key={index}>{column}</li>)
+              ) : (
+                <li>No columns detected</li>
+              )}
+            </ul>
+          </div>
+  
+          {/* Your existing form */}
           <form className="space-y-6">
             <div>
               <button
@@ -65,7 +103,7 @@ export function Login() {
               </button>
             </div>
           </form>
-
+  
           <div className="mt-6 flex justify-between">
             <button
               onClick={() => navigate('/signup')}
